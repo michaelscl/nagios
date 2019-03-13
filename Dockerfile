@@ -4,7 +4,7 @@ ENV LIVESTATUS      1.4.0p38
 ENV WMIC            1.3.14-3
 
 RUN apt-get update && apt-get install -y	\
-	mc \
+	mc sudo \
 	libnumber-format-perl  libconfig-inifiles-perl libdatetime-perl \
 	graphviz \
 	librrd-dev                  \
