@@ -2,9 +2,10 @@ FROM jasonrivers/nagios:latest
 
 ENV LIVESTATUS      1.4.0p38
 ENV WMIC            1.3.14-3
+ENV WMIPLUS			1.64
 
 RUN apt-get update && apt-get install -y	\
-	mc \
+	mc sudo \
 	libnumber-format-perl  libconfig-inifiles-perl libdatetime-perl \
 	graphviz \
 	librrd-dev                  \
@@ -36,3 +37,16 @@ RUN cd /tmp && \
 # POSTFIX set mail from
 RUN echo "sender_canonical_maps = hash:/etc/postfix/canonical" >> /etc/postfix/main.cf && \
     sed -i '3iif ! [ "${MAIL_FROM}" = "" ]; then\necho "root     ${MAIL_FROM}" > /etc/postfix/canonical\n/usr/sbin/postmap hash:/etc/postfix/canonical\nfi' /etc/sv/postfix/run
+	
+# check_wmi_plus
+RUN mkdir /opt/Check_WMI_Plus && \
+    cd /opt/Check_WMI_Plus && \
+    wget -O check_wmi_plus.v${WMIPLUS}.tar.gz http://edcint.co.nz/checkwmiplus/sites/default/files/check_wmi_plus.v${WMIPLUS}.tar.gz && \
+    tar zxvf check_wmi_plus.v${WMIPLUS}.tar.gz && \
+    rm check_wmi_plus.v${WMIPLUS}.tar.gz && \
+    cd /opt/Check_WMI_Plus/etc/check_wmi_plus && \
+	cp check_wmi_plus.conf.sample check_wmi_plus.conf && \
+    sed -i "s/^\$base_dir.*/\$base_dir=\'\/opt\/Check_WMI_Plus\';/" check_wmi_plus.conf && \
+	sed -i "s/^\$wmic_command.*/\$wmic_command=\"\/usr\/local\/bin\/wmic\";/" check_wmi_plus.conf && \
+	cd /opt/Check_WMI_Plus && \
+	sed -i "s/^my \$conf_file.*$/my \$conf_file=\'\/opt\/Check_WMI_Plus\/etc\/check_wmi_plus\/check_wmi_plus.conf\';/" check_wmi_plus.pl
