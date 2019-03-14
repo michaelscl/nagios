@@ -46,7 +46,7 @@ RUN mkdir /opt/Check_WMI_Plus && \
     rm check_wmi_plus.v${WMIPLUS}.tar.gz && \
     cd /opt/Check_WMI_Plus/etc/check_wmi_plus && \
 	cp check_wmi_plus.conf.sample check_wmi_plus.conf && \
-    sed -i "s!$base_dir.*!$base_dir='/opt/Check_WMI_Plus'!" check_wmi_plus.conf && \
-	sed -i "s!$wmic_command.*!$wmic_command='/usr/local/bin/wmic'!" check_wmi_plus.conf && \
+    sed -i "s/^\$base_dir.*/\$base_dir=\'\/opt\/Check_WMI_Plus\';/" check_wmi_plus.conf && \
+	sed -i "s/^\$wmic_command.*/\$wmic_command=\"\/usr\/local\/bin\/wmic\";/" check_wmi_plus.conf && \
 	cd /opt/Check_WMI_Plus && \
-	sed -i "s!$my $conf_file.*!my $conf_file='/opt/Check_WMI_Plus/etc/check_wmi_plus/check_wmi_plus.conf';'!" check_wmi_plus.pl
+	sed -i "s/^my \$conf_file.*$/my \$conf_file=\'\/opt\/Check_WMI_Plus\/etc\/check_wmi_plus\/check_wmi_plus.conf\';/" check_wmi_plus.pl
