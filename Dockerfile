@@ -28,8 +28,8 @@ RUN cd /tmp && \
 RUN sed -i 's!#broker_module=/somewhere/module1.o!broker_module=/usr/local/lib/mk-livestatus/livestatus.o /opt/nagios/var/rw/live debug=0!' /opt/nagios/etc/nagios.cfg
 
 # WMIC
+COPY src/wmi-client_${WMIC}_amd64.deb /tmp/wmic.deb
 RUN cd /tmp && \
-    wget -O wmic.deb https://github.com/cdrx/docker-wmic/raw/master/wmi-client_${WMIC}_amd64.deb && \
     dpkg -x wmic.deb wmic && \
     cp wmic/usr/bin/wmic /usr/local/bin && \
     rm -rf wmic*
