@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
     apt-get clean && rm -Rf /var/lib/apt/lists/*
 
 # MK live status
+COPY src/mk-livestatus-${LIVESTATUS}.tar.gz /tmp/mk-livestatus.tar.gz
 RUN cd /tmp && \
-    wget -O mk-livestatus.tar.gz https://mathias-kettner.de/support/${LIVESTATUS}/mk-livestatus-${LIVESTATUS}.tar.gz && \
     tar zxf mk-livestatus.tar.gz && \
     rm -f mk-livestatus.tar.gz && \
     mv mk-livestatus* mk-livestatus && \
