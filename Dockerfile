@@ -38,10 +38,11 @@ RUN cd /tmp && \
 RUN echo "sender_canonical_maps = hash:/etc/postfix/canonical" >> /etc/postfix/main.cf && \
     sed -i '3iif ! [ "${MAIL_FROM}" = "" ]; then\necho "root     ${MAIL_FROM}" > /etc/postfix/canonical\n/usr/sbin/postmap hash:/etc/postfix/canonical\nfi' /etc/sv/postfix/run
 
-# check_wmi_plus
-RUN mkdir /opt/Check_WMI_Plus && \
-    cd /opt/Check_WMI_Plus && \
-    wget -O check_wmi_plus.v${WMIPLUS}.tar.gz http://edcint.co.nz/checkwmiplus/sites/default/files/check_wmi_plus.v${WMIPLUS}.tar.gz && \
+### CHEK_WMI_PLUS
+# copy to dest
+COPY src/check_wmi_plus.v${WMIPLUS}.tar.gz /opt/Check_WMI_Plus/check_wmi_plus.v${WMIPLUS}.tar.gz
+# install and config
+RUN cd /opt/Check_WMI_Plus && \
     tar zxvf check_wmi_plus.v${WMIPLUS}.tar.gz && \
     rm check_wmi_plus.v${WMIPLUS}.tar.gz && \
     cd /opt/Check_WMI_Plus/etc/check_wmi_plus && \
